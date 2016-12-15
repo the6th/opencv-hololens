@@ -4,8 +4,8 @@ Build tested on Windows 10.0.14986 (AMD64) with VS2015 Community Edition
 
 Following prgs installed:
 
-cmake => https://cmake.org/ (tested with 3.6.2)
-python2.7 => https://www.python.org/download/releases/2.7/
+- cmake => https://cmake.org/ (tested with 3.6.2)
+- python2.7 => https://www.python.org/download/releases/2.7/
 
 how to run the build:
 
@@ -14,8 +14,8 @@ how to run the build:
 - opencv-hololens-contrib (https://github.com/sylvain-prevost/opencv_contrib-hololens)
 
 worry-free structure:          
-        parent_dir\opencv-hololens-contrib
-        parent_dir\opencv-hololens
+        - parent_dir\opencv-hololens-contrib
+        - parent_dir\opencv-hololens
 
 (you neeed to adjust the opencv-hololens\build_hololens_uwp.bat batch file if using a diff structure)
 
