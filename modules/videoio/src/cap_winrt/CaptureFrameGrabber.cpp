@@ -95,10 +95,18 @@ Media::CaptureFrameGrabber::~CaptureFrameGrabber()
 void Media::CaptureFrameGrabber::ShowCameraSettings()
 {
 #if WINAPI_FAMILY!=WINAPI_FAMILY_PHONE_APP
-    if (_state == State::Started)
-    {
-        CameraOptionsUI::Show(_capture.Get());
-    }
+	if (_state == State::Started)
+	{
+#if defined(_MSC_VER)
+		// Windows::Media::Capture::CameraOptionsUI class does not exits on Win10 non-desktop versions.
+		// When targetting Win10 Desktop, you need to add reference to "Windows Desktop Extension for the UWP"
+		// This is a crude workaround this compilation issue, assuming MSC compiler.
+		__if_exists(CameraOptionsUI)
+#endif
+		{
+			CameraOptionsUI::Show(_capture.Get());
+		}		
+    }	
 #endif
 }
 

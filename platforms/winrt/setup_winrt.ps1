@@ -52,18 +52,27 @@ Param(
     $ARCHITECTURES_IN = "x86",
 
     [parameter(Mandatory=$False)]
+    [Array]
+    [ValidateSet("ON","OFF")]
+    $XCOMPILE = "ON",   
+
+    [parameter(Mandatory=$False)]
     [String]
     $TESTS = "None",
 
     [parameter(Mandatory=$False)]
     [String]
     [ValidateNotNull()]
-    [ValidateSet("Visual Studio 12 2013","Visual Studio 11 2012")]
+    [ValidateSet("Visual Studio 12 2013","Visual Studio 11 2012","Visual Studio 14 2015")]
     $GENERATOR = "Visual Studio 12 2013",
 
     [parameter(Mandatory=$False)]
     [String]
-    $INSTALL
+    $INSTALL,
+
+    [parameter(Mandatory=$False)]
+    [String]
+    $CONTRIB_MODULES_PATH = "None"   
 )
 
 
@@ -110,6 +119,22 @@ function Set-VS12()
         $batchFile = [System.IO.Path]::Combine($vs12comntools, "vsvars32.bat")
         Get-Batchfile $BatchFile
         [System.Console]::Title = "Visual Studio 2010 Windows PowerShell"
+     } Catch {
+        $ErrorMessage = $_.Exception.Message
+        L "Error: $ErrorMessage"
+        return $false
+     }
+     return $true
+}
+
+# Enables access to Visual Studio 15 variables via "vsvars32.bat"
+function Set-VS14()
+{
+    Try {
+        $vs14comntools = (Get-ChildItem env:VS140COMNTOOLS).Value
+        $batchFile = [System.IO.Path]::Combine($vs14comntools, "vsvars32.bat")
+        Get-Batchfile $BatchFile
+        [System.Console]::Title = "Visual Studio 2015 Windows PowerShell"
      } Catch {
         $ErrorMessage = $_.Exception.Message
         L "Error: $ErrorMessage"
@@ -168,11 +193,11 @@ Function Execute() {
     $versions = New-Object System.Collections.ArrayList
     $VERSIONS_IN.Split("," ,[System.StringSplitOptions]::RemoveEmptyEntries) | ForEach {
         $_ = $_.Trim()
-        if ("8.0","8.1" -Contains $_) {
+        if ("8.0","8.1","10.0" -Contains $_) {
             [void]$versions.Add($_)
             D "$_ is valid"
         } else {
-            Throw "$($_) is not valid! Please use 8.0, 8.1"
+            Throw "$($_) is not valid! Please use 8.0, 8.1 or 10.0"
         }
     }
     D "Processed Versions: $versions"
@@ -205,7 +230,11 @@ Function Execute() {
     # Setting up Visual Studio variables to enable build
     $shouldBuid = $false
     If ($BUILD.IsPresent) {
-        $shouldBuild = Set-VS12
+    	If($GENERATOR = "Visual Studio 14 2015") {
+		    $shouldBuild = Set-VS14
+    	} else {
+        	$shouldBuild = Set-VS12    
+    	}    
     }
 
     foreach($plat in $platforms) {
@@ -236,6 +265,7 @@ Function Execute() {
                 }
 
                 $path = "$SRC\bin\$plat\$vers\$arch"
+		        $contrib_extraPath="$CONTRIB_MODULES_PATH"
 
                 L "-----------------------------------------------"
                 L "Target:"
@@ -245,6 +275,8 @@ Function Execute() {
                 L "    Architecture: $arch"
                 L "    Generator: $genName"
                 L "    Install Directory: $installPath"
+                L "    Contrib module Directory: $contrib_extraPath"                
+                L "    Cross-Compile: $XCOMPILE"
 
                 # Delete target directory if exists to ensure that CMake cache is cleared out.
                 If (Test-Path $path) {
@@ -258,8 +290,14 @@ Function Execute() {
                 Push-Location -Path $path
 
                 L "Generating project:"
-                L "cmake -G $genName -DCMAKE_SYSTEM_NAME:String=$platName -DCMAKE_SYSTEM_VERSION:String=$vers -DCMAKE_VS_EFFECTIVE_PLATFORMS:String=$arch -DCMAKE_INSTALL_PREFIX:PATH=$installPath $SRC"
-                cmake -G $genName -DCMAKE_SYSTEM_NAME:String=$platName -DCMAKE_SYSTEM_VERSION:String=$vers -DCMAKE_VS_EFFECTIVE_PLATFORMS:String=$arch -DCMAKE_INSTALL_PREFIX:PATH=$installPath $SRC
+                if (Test-Path $contrib_extraPath) {
+                    L "cmake -G $genName -DCMAKE_CROSSCOMPILING=$XCOMPILE -DOPENCV_EXTRA_MODULES_PATH:PATH=$contrib_extraPath -DCMAKE_SYSTEM_NAME:String=$platName -DCMAKE_SYSTEM_VERSION:String=$vers -DCMAKE_VS_EFFECTIVE_PLATFORMS:String=$arch -DCMAKE_INSTALL_PREFIX:PATH=$installPath $SRC"
+                    cmake -G $genName -DCMAKE_CROSSCOMPILING="$XCOMPILE" -DOPENCV_EXTRA_MODULES_PATH:PATH=$contrib_extraPath -DCMAKE_SYSTEM_NAME:String=$platName -DCMAKE_SYSTEM_VERSION:String=$vers -DCMAKE_VS_EFFECTIVE_PLATFORMS:String=$arch -DCMAKE_INSTALL_PREFIX:PATH=$installPath $SRC
+                } else {
+                    L "cmake -G $genName -DCMAKE_CROSSCOMPILING=$XCOMPILE -DCMAKE_SYSTEM_NAME:String=$platName -DCMAKE_SYSTEM_VERSION:String=$vers -DCMAKE_VS_EFFECTIVE_PLATFORMS:String=$arch -DCMAKE_INSTALL_PREFIX:PATH=$installPath $SRC"
+                    cmake -G $genName -DCMAKE_CROSSCOMPILING="$XCOMPILE" -DCMAKE_SYSTEM_NAME:String=$platName -DCMAKE_SYSTEM_VERSION:String=$vers -DCMAKE_VS_EFFECTIVE_PLATFORMS:String=$arch -DCMAKE_INSTALL_PREFIX:PATH=$installPath $SRC                    
+                }
+                
                 L "-----------------------------------------------"
 
                 # REFERENCE:
