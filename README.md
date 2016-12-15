@@ -9,12 +9,15 @@ python2.7 => https://www.python.org/download/releases/2.7/
 
 how to run the build:
 
-1/ download or clone opencv-hololens & opencv-hololens
+1/ download or clone 
+- opencv-hololens (https://github.com/sylvain-prevost/opencv-hololens) 
+- opencv-hololens-contrib (https://github.com/sylvain-prevost/opencv_contrib-hololens)
 
-worry-free structure:  
+worry-free structure:          
         parent_dir\opencv-hololens-contrib
         parent_dir\opencv-hololens
-you neeed to adjust the build_hololens_uwp.bat batch file if using a diff structure
+
+(you neeed to adjust the opencv-hololens\build_hololens_uwp.bat batch file if using a diff structure)
 
 
 2/ run parent_dir\opencv-hololens\build_hololens_uwp.bat
