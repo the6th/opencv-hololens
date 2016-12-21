@@ -46,15 +46,21 @@
   <!-- A readme.txt will be displayed when the package is installed -->
   <files>
 
-    <file src="css\**\*.css" target="content\css" />
+    <!-- readme -->
+    <file src="nuget_readme.txt" target="readme.txt" />
 
-    <file src="nuget_readme.txt" target="readme.txt" />    
-    
+    <!-- include files -->
+    <file src="..\bin\install\WS\10.0\x86\include\**\*.h" target="content\include" />
+    <file src="..\bin\install\WS\10.0\x86\include\**\*.hpp" target="content\include" />    
+
+    <!-- additional lib files -->
+    <file src="..\bin\WS\10.0\x86\lib\Release\*.lib" target="lib\native"/>
+
     <!-- WinMd and IntelliSense files -->
     <file src="..\bin\WS\10.0\x86\bin\Release\*.dll" target="lib\native"/>
     <file src="..\bin\WS\10.0\x86\bin\Release\*.winmd" target="lib\native"/>
     <file src="..\bin\WS\10.0\x86\bin\Release\*.pri" target="lib\native"/>
-    <file src="..\bin\WS\10.0\x86\bin\Release\*.pdb" target="lib\native"/>
+    <file src="..\bin\WS\10.0\x86\bin\Release\*.pdb" target="lib\native"/>       
     <!--
     <file src="..\bin\WS\10.0\x86\bin\Release\*.xml" target="lib\native"/>    
     <file src="..\bin\WS\10.0\x86\bin\Release\*.winmd.xml" target="lib\native"/>    
@@ -63,6 +69,7 @@
 
     <!-- .targets -->
     <file src="OpenCV-Hololens.Win10.targets" target="build\native\OpenCV-Hololens.Win10.targets"/>
+    <file src="OpenCV-Hololens.Win10.props" target="build\native\OpenCV-Hololens.Win10.props"/>
 
   </files>  
   
