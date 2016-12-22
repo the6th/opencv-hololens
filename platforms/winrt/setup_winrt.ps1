@@ -311,8 +311,8 @@ Function Execute() {
                     If ($shouldBuild) {
                         L "Building and installing project:"
 
-                        Call-MSBuild "OpenCV.sln" "Debug"
-                        Call-MSBuild "INSTALL.vcxproj" "Debug"
+                        #Call-MSBuild "OpenCV.sln" "Debug"
+                        #Call-MSBuild "INSTALL.vcxproj" "Debug"
 
                         Call-MSBuild "OpenCV.sln" "Release"
                         Call-MSBuild "INSTALL.vcxproj" "Release"

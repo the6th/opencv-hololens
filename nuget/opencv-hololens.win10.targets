@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
   <ItemGroup>
-    
+
     <Reference Include="opencv_aruco310">
       <HintPath>$(MSBuildThisFileDirectory)..\..\lib\native\opencv_aruco310.winmd</HintPath>
       <IsWinMDFile>true</IsWinMDFile>
@@ -197,11 +198,6 @@
       <IsWinMDFile>true</IsWinMDFile>
     </Reference>
 
-    <Reference Include="opencv_xphoto310">
-      <HintPath>$(MSBuildThisFileDirectory)..\..\lib\native\opencv_xphoto310.winmd</HintPath>
-      <IsWinMDFile>true</IsWinMDFile>
-    </Reference>
-    
   </ItemGroup>
 
 </Project>
