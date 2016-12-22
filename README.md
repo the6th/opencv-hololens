@@ -7,6 +7,26 @@ Build tested on Windows 10.0.14986 (AMD64) with VS2015 Community Edition
 For convenience I'm including 'Release' binaries in \opencv-hololens\release_binaries.7z
 but I'm not going to update it. So it is preferable to work out the build yourself if you want to sync up with main opencv trunk.
 
+====================
+
+Nuget package: https://www.nuget.org/packages/OpenCV-Hololens/
+
+Simply add the package via Nuget and you'll have:
+- hololens-compatible opencv 3.1 libraries automatically added as references to your c++ project
+- additional include directories & additional libraries set up for you
+
+for eg:
+
+\#include \<opencv2\\core\\mat.hpp\>  
+...  
+cv::Mat testMat = cv::Mat();
+
+\#include \<opencv2\\tracking.hpp\>  
+...  
+cv::Ptr<cv::Tracker> openCvTracker = cv::Tracker::create("KCF");
+
+====================
+
 Modules built:
 -----
 core flann imgproc ml photo reg surface_matching video fuzzy imgcodecs shape videoio highgui objdetect plot xobjdetect xphoto bgsegm bioinspired dpm face features2d line_descriptor saliency text calib3d ccalib datasets rgbd stereo tracking videostab xfeatures2d ximgproc aruco optflow phase_unwrapping stitching structured_light
