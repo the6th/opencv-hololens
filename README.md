@@ -27,6 +27,10 @@ cv::Ptr<cv::Tracker> openCvTracker = cv::Tracker::create("KCF");
 
 ====================
 
+![alt tag](https://github.com/sylvain-prevost/opencv-hololens/blob/master/VS2015_HoloApp_Cpp_with_OpenCV31.png?raw=true)
+
+====================
+
 Modules built:
 -----
 core flann imgproc ml photo reg surface_matching video fuzzy imgcodecs shape videoio highgui objdetect plot xobjdetect xphoto bgsegm bioinspired dpm face features2d line_descriptor saliency text calib3d ccalib datasets rgbd stereo tracking videostab xfeatures2d ximgproc aruco optflow phase_unwrapping stitching structured_light
@@ -80,3 +84,7 @@ Note2:
 -----
 I'm not pushing the changes in the main opencv trunk mainly because I'm not familiar with their commit rules, and because I'm pretty sure
  that the 'adjustements' I did are not acceptable as is.
+
+====================
+
+
