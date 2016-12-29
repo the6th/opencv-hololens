@@ -23,7 +23,7 @@ cv::Mat testMat = cv::Mat();
 
 \#include \<opencv2\\tracking.hpp\>  
 ...  
-cv::Ptr<cv::Tracker> openCvTracker = cv::Tracker::create("KCF");
+cv::Ptr\<cv::Tracker> openCvTracker = cv::Tracker::create("KCF");
 
 ====================
 
