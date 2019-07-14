@@ -216,7 +216,7 @@ enum CpuFeatures {
 #if (defined WIN32 || defined _WIN32) && defined(_M_ARM)
 # include <Intrin.h>
 # include <arm_neon.h>
-# define CV_NEON 1
+# define CV_NEON 0
 # define CPU_HAS_NEON_FEATURE (true)
 #elif defined(__ARM_NEON__) || (defined (__ARM_NEON) && defined(__aarch64__))
 #  include <arm_neon.h>
